@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+
+    <link rel = "stylesheet" data-th-href="@{'static/css/output.css'}" href="static/css/app.css" th:href="@{/static/css/app.css}">
+</head>
+<body>
+    
+
+ 
+<nav class="bg-white border-gray-200 dark:bg-gray-900">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <img src="data:image/jpeg;base64,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" class="h-8" alt="Flowbite Logo" />
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">DxNow</span>
+    </a>
+    <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+          <span class="sr-only">Open user menu</span>
+          <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo">
+        </button>
+        <!-- Dropdown menu -->
+        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
+          <div class="px-4 py-3">
+            <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
+            <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
+          </div>
+          <ul class="py-2" aria-labelledby="user-menu-button">
+            <li>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
+            </li>
+            <li>
+              <a href="about" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+            </li>
+          </ul>
+        </div>
+        <button data-collapse-toggle="navbar-user" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+          </svg>
+      </button>
+    </div>
+    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+      <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+        <li>
+          <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
+        </li>
+        <li>
+          <a href="about" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+        </li>
+        <li>
+          <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
+        </li>
+        <li>
+          <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Pricing</a>
+        </li>
+        <li>
+          <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+        </li>
+      </ul>
+    </div>
+    </div>
+  </nav>
+  <div class="flex justify-center items-center h-screen bg-gray-100 dark:bg-gray-900">
+    <div class="text-center">
+    <h1 class="text-4xl font-bold text-gray-900 dark:text-white">Welcome to the Leukemia Blood Detection</h1>
+    <p class="mt-4 text-lg text-gray-700 dark:text-gray-400">This is a simple home page template.</p>
+    </div>
+  <!-- this marks beginning of caraousel -->
+   
+
+<div id="default-carousel" class="relative w-full" data-carousel="slide">
+  <!-- Carousel wrapper -->
+  <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+       <!-- Item 1 -->
+      <div class="hidden duration-700 ease-in-out" data-carousel-item>
+          <img src="https://plus.unsplash.com/premium_photo-1672759407285-1d9e9bf6e396?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjF8fGxldWtlbWlhfGVufDB8fDB8fHww" alt="...">
+      </div>
+      <!-- Item 2 -->
+      <div class="hidden duration-700 ease-in-out" data-carousel-item>
+          <img src="https://plus.unsplash.com/premium_photo-1673214880615-c22716401a78?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDZ8fGxldWtlbWlhfGVufDB8fDB8fHww" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+      </div>
+      <!-- Item 3 -->
+      <div class="hidden duration-700 ease-in-out" data-carousel-item>
+          <img src="https://images.pexels.com/photos/8110775/pexels-photo-8110775.jpeg?auto=compress&cs=tinysrgb&w=400" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+      </div>
+      <!-- Item 4 -->
+      <div class="hidden duration-700 ease-in-out" data-carousel-item>
+          <img src="https://plus.unsplash.com/premium_photo-1726743663122-98bad1d9e3fb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjl8fGxldWtlbWlhfGVufDB8fDB8fHww" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+      </div>
+      <!-- Item 5 -->
+      <div class="hidden duration-700 ease-in-out" data-carousel-item>
+          <img src="https://plus.unsplash.com/premium_photo-1672243385528-7da088b07a53?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjV8fGxldWtlbWlhfGVufDB8fDB8fHww" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+      </div>
+  </div>
+  <!-- Slider indicators -->
+  <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
+      <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
+  </div>
+  <!-- Slider controls -->
+  <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+          <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+          </svg>
+          <span class="sr-only">Previous</span>
+      </span>
+  </button>
+  <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+          <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+          </svg>
+          <span class="sr-only">Next</span>
+      </span>
+  </button>
+</div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+</body>
+</html>

@@ -1,16 +1,21 @@
 package com.scm.majProj.services.implementation;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.scm.majProj.entities.User;
+import com.scm.majProj.helpers.AppConstants;
 import com.scm.majProj.helpers.ResourceNotFoundException;
 import com.scm.majProj.repositories.UserRepo;
 import com.scm.majProj.services.UserService;
+
+// Add your configuration imports here
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -18,10 +23,17 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     
     @Override
     public User saveUser(User user) {
+        String userId = UUID.randomUUID().toString();
+        user.setUserId(userId);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoleList(List.of(AppConstants.DEFAULT_USER_ROLE));
         return userRepo.save(user);
        }
 

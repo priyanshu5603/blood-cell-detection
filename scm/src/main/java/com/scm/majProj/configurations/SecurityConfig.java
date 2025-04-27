@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,10 +22,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers("/home","/about").permitAll() // Adjust as necessary
-                     ; // Require authentication for other requests
+            // authorize.requestMatchers("/home","/about","/register").permitAll() 
+            //          ; // Require authentication for other requests
+            authorize.requestMatchers("/user/**").authenticated();
+            authorize.anyRequest().permitAll(); // Allow all other requests without authentication 
         });
-         // Enable form-based login (optional)
+        
+        httpSecurity.formLogin(Customizer.withDefaults());//with help of this access denied wont come
+        // rather the please login page will come
 
         return httpSecurity.build();
     }

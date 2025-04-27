@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Setter; 
 
 @Entity(name = "user")
 @Table(name = "users")
@@ -37,12 +37,11 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID) 
     private String userId;
     private String password;
     private String email;
     private String phoneNumber;
-    //information
+    private boolean enabled = true;
     private boolean emailVerified = false;
     private boolean phoneVerified = false;
 
@@ -80,13 +79,16 @@ public class User implements UserDetails {
         // TODO Auto-generated method stub
         return true;
     }
-    @Override
-    public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        return true;
-    }
+
     @Override
     public String getPassword() {
         return this.password;
     }
+    
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    
 }

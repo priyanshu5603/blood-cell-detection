@@ -20,7 +20,7 @@ public class userForm {
     private String email;
     private String phoneNumber;
     //information
-    private boolean emailVerified = false;
-    private boolean phoneVerified = false;
+    private boolean emailVerified = true;
+    private boolean phoneVerified = true;
 
 }

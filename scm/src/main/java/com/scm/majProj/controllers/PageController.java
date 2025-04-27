@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 
 
 
+
 @Controller
 public class PageController { 
 
@@ -30,6 +31,12 @@ public class PageController {
     public String about() {
         return "about";
     }
+
+    @RequestMapping("service")
+    public String requestMethodName() {
+        return "service";
+    }
+    
     
     @RequestMapping("contact")
     public String contact() {

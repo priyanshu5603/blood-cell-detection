@@ -12,6 +12,8 @@ import com.scm.majProj.forms.userForm;
 import com.scm.majProj.services.UserService;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 
 
@@ -26,6 +28,14 @@ public class PageController {
     public String homePage() {
         return "home"; // Return view name without .html extension
     }
+
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/home"; // Return view name without .html extension
+    }
+    
+    
+
 
     @RequestMapping("about")
     public String about() {
@@ -51,6 +61,11 @@ public class PageController {
         userform.setLastName("Sharma");
         model.addAttribute("userForm", userform); // Add the userForm object to the model
         return "register";
+    }
+
+    @RequestMapping("login")
+    public String login() {
+        return "login";
     }
 
     @RequestMapping(value="/registering", method = RequestMethod.POST)

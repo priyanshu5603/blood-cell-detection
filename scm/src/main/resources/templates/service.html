@@ -1,17 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blood Cell Image Upload</title>
+    <title>Leukemia Analysis - DxNow</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <!-- Removed conflicting height style in body -->
+    <script>
+        // Check for saved theme preference or use system preference
+        if (localStorage.getItem('color-theme') === 'dark' || 
+            (!('color-theme' in localStorage) && 
+             window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
     <style>
         body {
           font-family: Arial, sans-serif;
           margin: 0;
           padding: 0;
           background-color: #f4f4f9;
+          transition: background-color 0.3s ease;
+        }
+        
+        .dark body {
+          background-color: #1f2937;
+          color: #f3f4f6;
         }
 
         #drop-area {
@@ -25,6 +40,12 @@
           text-align: center;
           background-color: #ffffff;
           cursor: pointer;
+          transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .dark #drop-area {
+          background-color: #374151;
+          border-color: #4b5563;
         }
 
         #drop-area.hover {
@@ -34,6 +55,11 @@
         #drop-area p {
           font-size: 16px;
           color: #666666;
+          transition: color 0.3s ease;
+        }
+        
+        .dark #drop-area p {
+          color: #d1d5db;
         }
 
         #preview-container {
@@ -45,31 +71,114 @@
           max-width: 100%;
           max-height: 150px;
         }
+
+        .result-container {
+          margin-top: 30px;
+          padding: 20px;
+          background-color: #ffffff;
+          border-radius: 10px;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+          max-width: 600px;
+          display: none;
+          transition: background-color 0.3s ease;
+        }
+        
+        .dark .result-container {
+          background-color: #374151;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .result-header {
+          font-size: 20px;
+          font-weight: bold;
+          margin-bottom: 15px;
+          color: #333;
+          transition: color 0.3s ease;
+        }
+        
+        .dark .result-header {
+          color: #f3f4f6;
+        }
+
+        .info-text {
+          margin-top: 40px;
+          max-width: 600px;
+          text-align: left;
+          color: #555;
+          transition: color 0.3s ease;
+        }
+        
+        .dark .info-text {
+          color: #d1d5db;
+        }
+
+        .info-text h2 {
+          color: #2563eb;
+          margin-bottom: 10px;
+        }
+
         /* Ensure full height */
         html, body {
             height: 100%;
-            margin: 0; /* Reset default margins */
+            margin: 0;
             padding: 0;
         }
 
         /* Ensure content fills the screen */
         .content-wrapper {
-            min-height: calc(100vh - 64px); /* Adjust based on nav height */
+            min-height: calc(100vh - 64px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 20px;
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Error message */
+        .error-message {
+            color: #e53e3e;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: left;
+            font-size: 14px;
         }
     </style>
-    <link rel = "stylesheet" data-th-href="@{'static/css/output.css'}" href="static/css/app.css" th:href="@{/static/css/app.css}">
+    <link rel="stylesheet" data-th-href="@{'static/css/output.css'}" href="static/css/app.css" th:href="@{/static/css/app.css}">
 </head>
 <body>
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
+    <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="DxNow Logo" />
         <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">DxNow</span>
     </a>
+    <!-- Dark mode toggle -->
+    <button id="theme-toggle" type="button" class="hidden md:flex items-center p-2 mr-2 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg toggle-dark-state-example hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+        <svg id="theme-toggle-dark-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+        <svg id="theme-toggle-light-icon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+        </svg>
+        <span class="ml-2" id="theme-toggle-text">Toggle Dark Mode</span>
+    </button>
     <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
         <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
           <span class="sr-only">Open user menu</span>
@@ -112,7 +221,7 @@
           <a href="about" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
         </li>
         <li>
-          <a href="#"class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Services</a>
+          <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Services</a>
         </li>
         <li>
           <a href="contact" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
@@ -123,6 +232,9 @@
 </nav>
   <!-- Main Content -->
 <div class="content-wrapper">
+    <h1 class="text-3xl font-bold mb-6 text-blue-700 dark:text-blue-400">Leukemia Cell Analysis</h1>
+    <p class="text-gray-600 dark:text-gray-300 mb-8 max-w-lg text-center">Upload a blood cell microscopy image to analyze for potential leukemia markers. Our AI model will analyze cellular morphology and provide rapid assessment.</p>
+    
     <div class="text-center">
         <div id="drop-area">
             <p>Drag & Drop your blood cell image here<br>or click to upload</p>
@@ -130,6 +242,30 @@
         </div>
 
         <div id="preview-container"></div>
+        
+        <div id="result-container" class="result-container">
+            <div class="result-header">Analysis Results</div>
+            <div id="result-content"></div>
+            <div id="result-spinner" class="spinner" style="display: none;"></div>
+            <div id="error-message" class="error-message" style="display: none;"></div>
+            <div class="mt-4">
+                <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
+                    <div id="confidence-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="confidence-text" class="text-sm text-gray-600">Confidence: 0%</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-text">
+        <h2>About Leukemia Detection</h2>
+        <p>Leukemia is a type of cancer that affects blood cells and bone marrow. Early detection is crucial for successful treatment. Our AI-powered analysis examines blood cell images for abnormalities indicative of leukemia.</p>
+        
+        <h2 class="mt-4">How It Works</h2>
+        <p>Our system uses advanced machine learning algorithms to identify cellular characteristics associated with different types of leukemia. The analysis examines cell morphology, size, nucleus-to-cytoplasm ratio, and other critical features.</p>
+        
+        <h2 class="mt-4">Important Note</h2>
+        <p>This tool is designed to assist healthcare professionals and should not replace proper medical diagnosis. Always consult with a qualified healthcare provider for proper diagnosis and treatment.</p>
     </div>
 </div>
 
@@ -137,6 +273,15 @@
     const dropArea = document.getElementById('drop-area');
     const fileInput = document.getElementById('file-input');
     const previewContainer = document.getElementById('preview-container');
+    const resultContainer = document.getElementById('result-container');
+    const resultContent = document.getElementById('result-content');
+    const resultSpinner = document.getElementById('result-spinner');
+    const errorMessage = document.getElementById('error-message');
+    const confidenceBar = document.getElementById('confidence-bar');
+    const confidenceText = document.getElementById('confidence-text');
+
+    // API endpoint
+    const API_ENDPOINT = '/api/analyze'; // Use the proper API endpoint
 
     // Highlight drop area when dragging files over it
     dropArea.addEventListener('dragover', (event) => {
@@ -173,39 +318,169 @@
     });
 
     // Function to handle file upload
-    function handleFileUpload(file) {
+    async function handleFileUpload(file) {
         if (!file.type.startsWith('image/')) {
-            alert('Please upload an image file.');
+            showError('Please upload an image file.');
             return;
         }
 
         // Preview the image
         const reader = new FileReader();
         reader.onload = (event) => {
-            previewContainer.innerHTML = `<img src="${event.target.result}" alt="Uploaded Image">`;
+            previewContainer.innerHTML = `<img src="${event.target.result}" alt="Uploaded Blood Cell Image">`;
         };
         reader.readAsDataURL(file);
 
-        // Send the image to the backend
-        const formData = new FormData();
-        formData.append('image', file);
+        // Show loading state
+        resultContent.innerHTML = '';
+        resultSpinner.style.display = 'block';
+        errorMessage.style.display = 'none';
+        resultContainer.style.display = 'block';
+        confidenceBar.style.width = '0%';
+        confidenceText.textContent = 'Confidence: Calculating...';
+        
+        try {
+            // Send the image to the backend
+            const formData = new FormData();
+            formData.append('image', file);
+            
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                body: formData,
+            });
+            
+            // Check if response is ok
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Server error: ${response.status}. ${errorText}`);
+            }
+            
+            // Check content type
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const errorText = await response.text();
+                throw new Error(`Expected JSON response but got ${contentType}. Response: ${errorText.substring(0, 100)}...`);
+            }
+            
+            const data = await response.json();
+            displayResults(data);
+        } catch (error) {
+            console.error('Error analyzing image:', error);
+            showError(`Error analyzing image: ${error.message}`);
+        } finally {
+            resultSpinner.style.display = 'none';
+        }
+    }
 
-        fetch('/api/upload-blood-cell-image', { // Replace with your backend endpoint
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(`Prediction Result: ${data.prediction}`);
-        })
-        .catch(error => {
-            console.error('Error uploading image:', error);
-            alert('Error uploading image. Please try again.');
-        });
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+        resultContent.innerHTML = '';
+        resultSpinner.style.display = 'none';
+        resultContainer.style.display = 'block';
+        confidenceBar.style.width = '0%';
+        confidenceText.textContent = 'Confidence: 0%';
+    }
+
+    function displayResults(data) {
+        if (data.error) {
+            showError(data.error);
+            return;
+        }
+        
+        // Extract prediction and confidence
+        const prediction = data.prediction || 'Unknown';
+        const confidence = data.confidence ? Math.round(data.confidence * 100) : 0;
+        
+        // Determine result class based on prediction
+        let resultClass = '';
+        let cellCount = data.cellCount || 'N/A';
+        let abnormalCells = data.abnormalCells || 'N/A';
+        
+        switch(prediction) {
+            case 'Benign':
+                resultClass = 'text-green-600 font-bold';
+                break;
+            case 'Early':
+                resultClass = 'text-yellow-500 font-bold';
+                break;
+            case 'Pre':
+                resultClass = 'text-orange-500 font-bold';
+                break;
+            case 'Pro':
+                resultClass = 'text-red-600 font-bold';
+                break;
+            default:
+                resultClass = 'text-gray-600 font-bold';
+        }
+        
+        // Display results
+        resultContent.innerHTML = `
+            <p class="${resultClass}">${prediction}</p>
+            <div class="mt-4">
+                <p class="text-gray-700 dark:text-gray-300">Analysis completed on: ${new Date().toLocaleString()}</p>
+            </div>
+        `;
+        
+        // Update confidence bar
+        confidenceBar.style.width = `${confidence}%`;
+        confidenceText.textContent = `Confidence: ${confidence}%`;
+        
+        // Hide error message if any
+        errorMessage.style.display = 'none';
     }
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+<script>
+    // Dark mode toggle functionality
+    var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    var themeToggleText = document.getElementById('theme-toggle-text');
+
+    // Change the icons inside the button based on previous settings
+    if (localStorage.getItem('color-theme') === 'dark' || 
+        (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        themeToggleLightIcon.classList.remove('hidden');
+        themeToggleText.textContent = 'Toggle Light Mode';
+    } else {
+        themeToggleDarkIcon.classList.remove('hidden');
+        themeToggleText.textContent = 'Toggle Dark Mode';
+    }
+
+    var themeToggleBtn = document.getElementById('theme-toggle');
+    
+    themeToggleBtn.addEventListener('click', function() {
+        // Toggle icons
+        themeToggleDarkIcon.classList.toggle('hidden');
+        themeToggleLightIcon.classList.toggle('hidden');
+        
+        // If set via local storage previously
+        if (localStorage.getItem('color-theme')) {
+            if (localStorage.getItem('color-theme') === 'light') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                themeToggleText.textContent = 'Toggle Light Mode';
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                themeToggleText.textContent = 'Toggle Dark Mode';
+            }
+        } else {
+            // If not set via local storage previously
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                themeToggleText.textContent = 'Toggle Dark Mode';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                themeToggleText.textContent = 'Toggle Light Mode';
+            }
+        }
+    });
+</script>
 
 </body>
 </html>
